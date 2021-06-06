@@ -53,6 +53,10 @@
     <string name="auth_dont_have_account">Do not have an account ?</string>
     <string name="auth_have_account">Already have an account ?</string>
 
+    <!--  API resepku  -->
+    <string name="api_token">LOREMIPSUM</string>
+    <string name="api_login">http://rizqisyahrendra.tech:5002/auth/login</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -3,6 +3,7 @@ package com.example.resepku;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,9 +21,16 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class FragmentSetting extends Fragment {
     CardView cardSettingProfile, cardSettingSignOut;
+    MainActivity parent;
 
     public FragmentSetting() {
         // Required empty public constructor
+    }
+
+    public static FragmentSetting newInstance(MainActivity tempActivity) {
+        FragmentSetting fragment = new FragmentSetting();
+        fragment.parent = tempActivity;
+        return fragment;
     }
 
     @Override
@@ -59,12 +67,7 @@ public class FragmentSetting extends Fragment {
                         .setMessage("Are you sure you want to sign out?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-                                firebaseAuth.signOut();
-
-                                Intent intentLogin = new Intent(getContext(), LoginActivity.class);
-                                getActivity().startActivity(intentLogin);
-                                getActivity().finish();
+                                new LogoutTask().execute();
                             }
                         })
                         .setNegativeButton(android.R.string.no, null)
@@ -73,5 +76,21 @@ public class FragmentSetting extends Fragment {
                 alertDialog.show();
             }
         });
+    }
+
+    private class LogoutTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            parent.getDB().userLoginDao().clear();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            Intent intentLogin = new Intent(getContext(), LoginActivity.class);
+            getActivity().startActivity(intentLogin);
+            getActivity().finish();
+            super.onPostExecute(aVoid);
+        }
     }
 }

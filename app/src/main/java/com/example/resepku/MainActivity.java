@@ -3,6 +3,7 @@ package com.example.resepku;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.room.Room;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     BottomNavigationView bottomNavigationView;
+    public AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,10 +23,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         setContentView(R.layout.activity_main);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
+        db = Room.databaseBuilder(this, AppDatabase.class, "db_resep").build();
 
         if (savedInstanceState == null) {
             bottomNavigationView.setSelectedItemId(R.id.btnMenuHome);
         }
+    }
+
+    public AppDatabase getDB() {
+        return db;
     }
 
     public boolean loadFragment(Fragment fragment) {
@@ -47,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             fragment = new FragmentBookmark();
         }
         if (item.getItemId() == R.id.btnMenuSettings) {
-            fragment = new FragmentSetting();
+            fragment = FragmentSetting.newInstance(this);
         }
 
         return loadFragment(fragment);
