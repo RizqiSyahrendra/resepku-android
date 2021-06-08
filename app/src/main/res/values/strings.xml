@@ -56,6 +56,9 @@
     <!--  API resepku  -->
     <string name="api_token">LOREMIPSUM</string>
     <string name="api_login">http://rizqisyahrendra.tech:5002/auth/login</string>
+    <string name="api_register">http://rizqisyahrendra.tech:5002/auth/register</string>
+    <string name="api_meal_list">http://rizqisyahrendra.tech:5002/meal</string>
+    <string name="api_meal_detail">http://rizqisyahrendra.tech:5002/meal/detail</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -70,10 +70,10 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public void submitSearch(String q) {
-        listMeal.add(new Meal("1", "Bakso", "makanan", "Indonesia", "tes"));
-        listMeal.add(new Meal("2", "Mie", "makanan", "Indonesia", "tes"));
-        listMeal.add(new Meal("3", "Nasi Goreng", "makanan", "Indonesia", "tes"));
-        listMeal.add(new Meal("4", "Gado - Gado", "makanan", "Indonesia", "tes"));
+//        listMeal.add(new Meal("1", "Bakso", "makanan", "Indonesia", "tes"));
+//        listMeal.add(new Meal("2", "Mie", "makanan", "Indonesia", "tes"));
+//        listMeal.add(new Meal("3", "Nasi Goreng", "makanan", "Indonesia", "tes"));
+//        listMeal.add(new Meal("4", "Gado - Gado", "makanan", "Indonesia", "tes"));
         receipesAdapter.notifyDataSetChanged();
     }
 

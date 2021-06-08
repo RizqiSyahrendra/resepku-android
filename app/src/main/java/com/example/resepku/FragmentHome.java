@@ -12,12 +12,25 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.button.MaterialButton;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 
 public class FragmentHome extends Fragment {
@@ -26,16 +39,18 @@ public class FragmentHome extends Fragment {
     EditText txtHomeSearch;
     MaterialButton btnHomeSearch, btnHomeViewAll;
     ArrayList<Meal> listMeal;
+    MainActivity parent;
+
+    public static FragmentHome newInstance(MainActivity tempParent) {
+        FragmentHome fragment = new FragmentHome();
+        fragment.parent = tempParent;
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         listMeal = new ArrayList<>();
-        listMeal.add(new Meal("1", "Bakso", "makanan", "Indonesia", "tes"));
-        listMeal.add(new Meal("2", "Mie", "makanan", "Indonesia", "tes"));
-        listMeal.add(new Meal("3", "Nasi Goreng", "makanan", "Indonesia", "tes"));
-        listMeal.add(new Meal("4", "Gado - Gado", "makanan", "Indonesia", "tes"));
-
     }
 
     @Override
@@ -54,8 +69,12 @@ public class FragmentHome extends Fragment {
         rvHomeReceipes = view.findViewById(R.id.rvHomeReceipes);
         rvHomeReceipes.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
+        //set adapter to recyclerview
         ReceipesAdapter receipesAdapter = new ReceipesAdapter(getContext(), listMeal);
         rvHomeReceipes.setAdapter(receipesAdapter);
+
+        //fill data to adapter
+        new TaskGetListResep(getContext(), parent.getDB(), "", "", listMeal, receipesAdapter).execute();
 
         btnHomeSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,4 +97,5 @@ public class FragmentHome extends Fragment {
         searchIntent.putExtra("query_search", querySearch);
         startActivity(searchIntent);
     }
+
 }

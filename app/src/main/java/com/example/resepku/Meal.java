@@ -1,22 +1,49 @@
 package com.example.resepku;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "meal")
 public class Meal {
-    private String id, name, category, area, instructions;
+    @PrimaryKey
+    @ColumnInfo(name = "id")
+    private int id;
+
+    @ColumnInfo(name = "name")
+    private String name;
+
+    @ColumnInfo(name = "category")
+    private String category;
+
+    @ColumnInfo(name = "area")
+    private String area;
+
+    @ColumnInfo(name = "instructions")
+    private String instructions;
+
+    @ColumnInfo(name = "rating")
     private float rating;
 
-    public Meal(String id, String name, String category, String area, String instructions) {
+    @ColumnInfo(name = "image")
+    private String image;
+
+    public Meal(int id, String name, String category, String area, String instructions, String image, float rating) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.area = area;
         this.instructions = instructions;
+        this.image = image;
+        this.rating = rating;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -53,7 +80,7 @@ public class Meal {
     }
 
     public float getRating() {
-        return this.getRating();
+        return 0;
     }
 
     public void setRating(float rate) {
@@ -61,6 +88,6 @@ public class Meal {
     }
 
     public String getImage() {
-        return Endpoint.MEAL_API_IMG_MEAL + this.name;
+        return this.image;
     }
 }

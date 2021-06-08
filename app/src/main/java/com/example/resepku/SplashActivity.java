@@ -29,14 +29,6 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 new GetUserLoginTask().execute();
-//                if (false) {
-//                    Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
-//                    startActivity(mainIntent);
-//                }
-//                else {
-//                    Intent loginIntent = new Intent(SplashActivity.this, LoginActivity.class);
-//                    startActivity(loginIntent);
-//                }
                 Intent loginIntent = new Intent(SplashActivity.this, LoginActivity.class);
                 startActivity(loginIntent);
                 finish();
@@ -54,7 +46,6 @@ public class SplashActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(UserLogin userLogin) {
             if (userLogin != null) {
-                Log.d("USER_LOGIN", userLogin.toString());
                 Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
                 startActivity(mainIntent);
                 finish();

@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         Fragment fragment = null;
 
         if (item.getItemId() == R.id.btnMenuHome) {
-            fragment = new FragmentHome();
+            fragment = FragmentHome.newInstance(this);
         }
         if (item.getItemId() == R.id.btnMenuBookmark) {
             fragment = new FragmentBookmark();

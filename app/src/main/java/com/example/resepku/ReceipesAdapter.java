@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 public class ReceipesAdapter extends RecyclerView.Adapter<ReceipesAdapter.ViewHolder> {
@@ -33,6 +35,10 @@ public class ReceipesAdapter extends RecyclerView.Adapter<ReceipesAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Meal meal = listMeal.get(position);
+        holder.txtItemReceipeName.setText(meal.getName());
+        Picasso.get().load(meal.getImage()).placeholder(R.drawable.food_placeholder).into(holder.imgItemReceipe);
+
         holder.cardItemReceipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

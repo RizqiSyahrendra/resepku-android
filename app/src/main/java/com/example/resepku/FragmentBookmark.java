@@ -27,10 +27,10 @@ public class FragmentBookmark extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         listMeal = new ArrayList<>();
-        listMeal.add(new Meal("1", "Bakso", "makanan", "Indonesia", "tes"));
-        listMeal.add(new Meal("2", "Mie", "makanan", "Indonesia", "tes"));
-        listMeal.add(new Meal("3", "Nasi Goreng", "makanan", "Indonesia", "tes"));
-        listMeal.add(new Meal("4", "Gado - Gado", "makanan", "Indonesia", "tes"));
+//        listMeal.add(new Meal("1", "Bakso", "makanan", "Indonesia", "tes"));
+//        listMeal.add(new Meal("2", "Mie", "makanan", "Indonesia", "tes"));
+//        listMeal.add(new Meal("3", "Nasi Goreng", "makanan", "Indonesia", "tes"));
+//        listMeal.add(new Meal("4", "Gado - Gado", "makanan", "Indonesia", "tes"));
     }
 
     @Override

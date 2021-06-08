@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
                     new AddUserLoginTask().execute(userLogin);
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(LoginActivity.this, "Terjadi kesalahan login", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
