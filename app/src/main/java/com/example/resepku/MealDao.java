@@ -13,7 +13,13 @@ public interface MealDao {
     @Query("SELECT * FROM meal")
     List<Meal> getAll();
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Query("SELECT * FROM meal WHERE lower(substr(name, 1, 1)) = :first")
+    List<Meal> getByFirstLetter(String first);
+
+    @Query("SELECT * FROM meal WHERE name LIKE '%' || :q || '%'")
+    List<Meal> getByName(String q);
+
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     void insert(Meal meal);
 
     @Delete

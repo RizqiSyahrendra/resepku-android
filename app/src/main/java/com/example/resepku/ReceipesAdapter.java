@@ -37,6 +37,7 @@ public class ReceipesAdapter extends RecyclerView.Adapter<ReceipesAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Meal meal = listMeal.get(position);
         holder.txtItemReceipeName.setText(meal.getName());
+        holder.imgItemReceipe.setVisibility(View.VISIBLE);
         Picasso.get().load(meal.getImage()).placeholder(R.drawable.food_placeholder).into(holder.imgItemReceipe);
 
         holder.cardItemReceipe.setOnClickListener(new View.OnClickListener() {

@@ -54,8 +54,7 @@ public class FragmentHome extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
@@ -74,7 +73,7 @@ public class FragmentHome extends Fragment {
         rvHomeReceipes.setAdapter(receipesAdapter);
 
         //fill data to adapter
-        new TaskGetListResep(getContext(), parent.getDB(), "", "", listMeal, receipesAdapter).execute();
+        new TaskGetListResep(getContext(), parent.getDB(), "a", "", listMeal, receipesAdapter).execute();
 
         btnHomeSearch.setOnClickListener(new View.OnClickListener() {
             @Override

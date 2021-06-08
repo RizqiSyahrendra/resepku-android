@@ -82,6 +82,7 @@ public class FragmentSetting extends Fragment {
         @Override
         protected Void doInBackground(Void... voids) {
             parent.getDB().userLoginDao().clear();
+            parent.getDB().mealDao().clear();
             return null;
         }
 

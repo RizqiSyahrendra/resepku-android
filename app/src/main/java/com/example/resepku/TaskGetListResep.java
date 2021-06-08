@@ -43,7 +43,15 @@ public class TaskGetListResep extends AsyncTask<Void, Void, List<Meal>> {
     @Override
     protected List<Meal> doInBackground(Void... voids) {
         userLogin = db.userLoginDao().get();
-        List<Meal> tempMeals = db.mealDao().getAll();
+        List<Meal> tempMeals;
+
+        if (search != null && !search.trim().equals("")) {
+            tempMeals = db.mealDao().getByName(search);
+        }
+        else {
+            tempMeals = db.mealDao().getByFirstLetter(first);
+        }
+
         return tempMeals;
     }
 
@@ -74,7 +82,10 @@ public class TaskGetListResep extends AsyncTask<Void, Void, List<Meal>> {
                                     0
                             );
 
-                            new TaskAddResep(db).execute(meal);
+                            if (search == null || search.trim().equals("")) {
+                                new TaskAddResep(db).execute(meal);
+                            }
+
                             meals.add(meal);
                         }
 
@@ -87,13 +98,15 @@ public class TaskGetListResep extends AsyncTask<Void, Void, List<Meal>> {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    String res = new String(error.networkResponse.data);
-                    try {
-                        JSONObject resObj = new JSONObject(res);
-                        Toast.makeText(context, resObj.getString("message"), Toast.LENGTH_SHORT).show();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                    if (error.networkResponse != null){
+                        String res = new String(error.networkResponse.data);
+                        try {
+                            JSONObject resObj = new JSONObject(res);
+                            Toast.makeText(context, resObj.getString("message"), Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
             }){
@@ -107,8 +120,8 @@ public class TaskGetListResep extends AsyncTask<Void, Void, List<Meal>> {
                     try {
                         JSONObject body = new JSONObject();
                         body.put("token", userLogin.getAccessToken());
-                        body.put("first", "a");
-                        body.put("search", "");
+                        body.put("first", first);
+                        body.put("search", search);
                         return body.toString().getBytes(StandardCharsets.UTF_8);
                     }
                     catch (JSONException e) {
