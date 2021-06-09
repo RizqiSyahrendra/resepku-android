@@ -28,7 +28,7 @@ public class SearchActivity extends AppCompatActivity {
     AppDatabase db;
     char[] alphabet;
     int ctrAlphabet;
-    ProgressBar pgBarSearch;
+    ProgressBar pgBarSearch, pgBarSearchTop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +38,7 @@ public class SearchActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         rvSearch = findViewById(R.id.rvSearch);
         pgBarSearch = findViewById(R.id.pgBarSearch);
+        pgBarSearchTop = findViewById(R.id.pgBarSearchTop);
         db = Room.databaseBuilder(this, AppDatabase.class, "db_resep").build();
 
         mainIntent = getIntent();
@@ -114,7 +115,7 @@ public class SearchActivity extends AppCompatActivity {
         receipesAdapter.notifyDataSetChanged();
 
         if (q != null && !q.trim().equals("")) {
-            new TaskGetListResep(this, db, "", q, listMeal, receipesAdapter, pgBarSearch).execute();
+            new TaskGetListResep(this, db, "", q, listMeal, receipesAdapter, pgBarSearchTop).execute();
         }
         else {
             new TaskGetListResep(this, db, "a", "", listMeal, receipesAdapter, pgBarSearch).execute();
