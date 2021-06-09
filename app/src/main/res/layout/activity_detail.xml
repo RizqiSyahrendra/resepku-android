@@ -13,6 +13,7 @@
         android:paddingHorizontal="10dp"
         android:background="@color/primary1">
         <ImageView
+            android:id="@+id/imgDetailResep"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_marginTop="20dp"
@@ -23,6 +24,7 @@
             android:padding="10dp"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/txtDetailFoodName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -41,10 +43,11 @@
                     android:layout_marginRight="10dp"
                     android:src="@drawable/ic_tag_secondary"/>
                 <TextView
+                    android:id="@+id/txtDetailFoodCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/secondary1"
-                    android:text="Food Tag"/>
+                    android:text="-"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -57,10 +60,11 @@
                     android:layout_marginRight="10dp"
                     android:src="@drawable/ic_place_secondary"/>
                 <TextView
+                    android:id="@+id/txtDetailFoodArea"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/secondary1"
-                    android:text="Food Place"/>
+                    android:text="-"/>
             </LinearLayout>
             <RatingBar
                 android:id="@+id/ratingDetail"

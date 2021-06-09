@@ -43,7 +43,7 @@ public class ReceipesAdapter extends RecyclerView.Adapter<ReceipesAdapter.ViewHo
         holder.cardItemReceipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.viewDetail("1");
+                holder.viewDetail(""+meal.getId());
             }
         });
     }
@@ -67,6 +67,7 @@ public class ReceipesAdapter extends RecyclerView.Adapter<ReceipesAdapter.ViewHo
 
         public void viewDetail(String idMeal) {
             Intent intentDetail = new Intent(itemView.getContext(), DetailActivity.class);
+            intentDetail.putExtra("id_meal", idMeal);
             itemView.getContext().startActivity(intentDetail);
         }
     }

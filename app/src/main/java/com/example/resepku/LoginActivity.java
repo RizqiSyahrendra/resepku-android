@@ -84,12 +84,14 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 btnSignInSubmit.setEnabled(true);
-                String body = new String(error.networkResponse.data);
-                try {
-                    JSONObject result = new JSONObject(body);
-                    Toast.makeText(LoginActivity.this, result.getString("message"), Toast.LENGTH_SHORT).show();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (error.networkResponse != null) {
+                    String body = new String(error.networkResponse.data);
+                    try {
+                        JSONObject result = new JSONObject(body);
+                        Toast.makeText(LoginActivity.this, result.getString("message"), Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }){

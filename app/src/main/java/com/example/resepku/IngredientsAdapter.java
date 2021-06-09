@@ -1,6 +1,7 @@
 package com.example.resepku;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -33,6 +36,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
         Ingredient ingredient = listIngredient.get(position);
         String ingredientName = ingredient.getMeasure() + " " + ingredient.getName();
         holder.txtItemIngredientName.setText(ingredientName);
+        Picasso.get().load(ingredient.getImage()).placeholder(R.drawable.food_placeholder).into(holder.imgItemIngredient);
     }
 
     @Override

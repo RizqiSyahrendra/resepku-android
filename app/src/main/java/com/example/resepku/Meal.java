@@ -2,7 +2,6 @@ package com.example.resepku;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "meal")
@@ -28,6 +27,9 @@ public class Meal {
 
     @ColumnInfo(name = "image")
     private String image;
+
+    @ColumnInfo(name = "ingredients")
+    private String ingredients;
 
     public Meal(int id, String name, String category, String area, String instructions, String image, float rating) {
         this.id = id;
@@ -90,4 +92,18 @@ public class Meal {
     public String getImage() {
         return this.image;
     }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getIngredients() {
+        return this.ingredients;
+    }
+
+    public void setIngredients(String ing) {
+        this.ingredients = ing;
+    }
+
+
 }

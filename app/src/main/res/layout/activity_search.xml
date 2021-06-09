@@ -7,8 +7,19 @@
     android:orientation="vertical"
     android:padding="10dp"
     tools:context=".SearchActivity">
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvSearch"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <ProgressBar
+            android:layout_alignBottom="@+id/rvSearch"
+            android:id="@+id/pgBarSearch"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:indeterminate="true" />
+    </RelativeLayout>
 </LinearLayout>

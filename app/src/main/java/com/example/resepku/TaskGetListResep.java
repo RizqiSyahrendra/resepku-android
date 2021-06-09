@@ -3,6 +3,8 @@ package com.example.resepku;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +32,7 @@ public class TaskGetListResep extends AsyncTask<Void, Void, List<Meal>> {
     private ArrayList<Meal> meals;
     private ReceipesAdapter receipesAdapter;
     private UserLogin userLogin;
+    private ProgressBar pgBar;
 
     public TaskGetListResep(Context context, AppDatabase db, String first, String search, ArrayList<Meal> meals, ReceipesAdapter receipesAdapter) {
         this.context = context;
@@ -38,6 +41,18 @@ public class TaskGetListResep extends AsyncTask<Void, Void, List<Meal>> {
         this.search = search;
         this.meals = meals;
         this.receipesAdapter = receipesAdapter;
+    }
+
+    public TaskGetListResep(Context context, AppDatabase db, String first, String search, ArrayList<Meal> meals, ReceipesAdapter receipesAdapter, ProgressBar pgBar) {
+        this.context = context;
+        this.db = db;
+        this.first = first;
+        this.search = search;
+        this.meals = meals;
+        this.receipesAdapter = receipesAdapter;
+        this.pgBar = pgBar;
+
+        pgBar.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -60,6 +75,9 @@ public class TaskGetListResep extends AsyncTask<Void, Void, List<Meal>> {
         if (tempMeals.size() > 0) {
             meals.addAll(tempMeals);
             receipesAdapter.notifyDataSetChanged();
+            if (pgBar != null) {
+                pgBar.setVisibility(View.GONE);
+            }
         }
         else {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, context.getString(R.string.api_meal_list), new Response.Listener<String>() {
@@ -94,6 +112,10 @@ public class TaskGetListResep extends AsyncTask<Void, Void, List<Meal>> {
                         e.printStackTrace();
                         Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
                     }
+
+                    if (pgBar != null) {
+                        pgBar.setVisibility(View.GONE);
+                    }
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -107,6 +129,10 @@ public class TaskGetListResep extends AsyncTask<Void, Void, List<Meal>> {
                             e.printStackTrace();
                             Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
                         }
+                    }
+
+                    if (pgBar != null) {
+                        pgBar.setVisibility(View.GONE);
                     }
                 }
             }){

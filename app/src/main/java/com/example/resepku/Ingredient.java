@@ -1,11 +1,12 @@
 package com.example.resepku;
 
 public class Ingredient {
-    private String name, measure;
+    private String name, measure, image;
 
-    public Ingredient(String name, String measure) {
+    public Ingredient(String name, String measure, String image) {
         this.name = name;
         this.measure = measure;
+        this.image = image;
     }
 
     public String getName() {
@@ -25,6 +26,10 @@ public class Ingredient {
     }
 
     public String getImage() {
-        return Endpoint.MEAL_API_IMG_INGREDIENT + this.name;
+        return this.image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

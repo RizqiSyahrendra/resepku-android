@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -26,6 +28,7 @@ public class SearchActivity extends AppCompatActivity {
     AppDatabase db;
     char[] alphabet;
     int ctrAlphabet;
+    ProgressBar pgBarSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,7 @@ public class SearchActivity extends AppCompatActivity {
         setTitle(R.string.search_title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         rvSearch = findViewById(R.id.rvSearch);
+        pgBarSearch = findViewById(R.id.pgBarSearch);
         db = Room.databaseBuilder(this, AppDatabase.class, "db_resep").build();
 
         mainIntent = getIntent();
@@ -42,11 +46,12 @@ public class SearchActivity extends AppCompatActivity {
         receipesAdapter = new ReceipesAdapter(this, listMeal);
         alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
         ctrAlphabet = 1;
+        pgBarSearch.setVisibility(View.VISIBLE);
 
         //jika search kosong
         if (querySearch.trim().equals("")) {
-            new TaskGetListResep(this, db, "a", "", listMeal, receipesAdapter).execute();
-            new TaskGetListResep(this, db, "b", "", listMeal, receipesAdapter).execute();
+            new TaskGetListResep(this, db, "a", "", listMeal, receipesAdapter, pgBarSearch).execute();
+            new TaskGetListResep(this, db, "b", "", listMeal, receipesAdapter, pgBarSearch).execute();
         }
 
         rvSearch.setLayoutManager(new GridLayoutManager(this, 2));
@@ -60,7 +65,7 @@ public class SearchActivity extends AppCompatActivity {
                 if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (ctrAlphabet < 25) {
                         ctrAlphabet++;
-                        new TaskGetListResep(SearchActivity.this, db, ""+alphabet[ctrAlphabet], "", listMeal, receipesAdapter).execute();
+                        new TaskGetListResep(SearchActivity.this, db, ""+alphabet[ctrAlphabet], "", listMeal, receipesAdapter, pgBarSearch).execute();
                     }
                 }
             }
@@ -109,11 +114,11 @@ public class SearchActivity extends AppCompatActivity {
         receipesAdapter.notifyDataSetChanged();
 
         if (q != null && !q.trim().equals("")) {
-            new TaskGetListResep(this, db, "", q, listMeal, receipesAdapter).execute();
+            new TaskGetListResep(this, db, "", q, listMeal, receipesAdapter, pgBarSearch).execute();
         }
         else {
-            new TaskGetListResep(this, db, "a", "", listMeal, receipesAdapter).execute();
-            new TaskGetListResep(this, db, "b", "", listMeal, receipesAdapter).execute();
+            new TaskGetListResep(this, db, "a", "", listMeal, receipesAdapter, pgBarSearch).execute();
+            new TaskGetListResep(this, db, "b", "", listMeal, receipesAdapter, pgBarSearch).execute();
         }
     }
 
