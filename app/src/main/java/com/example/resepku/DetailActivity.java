@@ -17,6 +17,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,6 +54,8 @@ public class DetailActivity extends AppCompatActivity {
     AppDatabase db;
     UserLogin userLogin;
     IngredientsAdapter ingredientsAdapter;
+    ProgressBar pgBarIngredients, pgBarDetailHeader;
+    LinearLayout layoutDetailHeaderRight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +72,9 @@ public class DetailActivity extends AppCompatActivity {
         imgDetailBookmark = findViewById(R.id.imgDetailBookmark);
         imgDetailResep = findViewById(R.id.imgDetailResep);
         ratingDetail = findViewById(R.id.ratingDetail);
+        pgBarIngredients = findViewById(R.id.pgBarIngredients);
+        pgBarDetailHeader = findViewById(R.id.pgBarDetailHeader);
+        layoutDetailHeaderRight = findViewById(R.id.layoutDetailHeaderRight);
         listIngredient = new ArrayList<>();
         isBookmarked = false;
         txtDetailFoodName = findViewById(R.id.txtDetailFoodName);
@@ -83,6 +90,9 @@ public class DetailActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        pgBarIngredients.setVisibility(View.VISIBLE);
+        pgBarDetailHeader.setVisibility(View.VISIBLE);
+        layoutDetailHeaderRight.setVisibility(View.GONE);
         ingredientsAdapter = new IngredientsAdapter(this, listIngredient);
         rvDetailIngredients.setLayoutManager(new GridLayoutManager(this, 3));
         rvDetailIngredients.setAdapter(ingredientsAdapter);
@@ -171,6 +181,9 @@ public class DetailActivity extends AppCompatActivity {
         txtDetailFoodArea.setText(meal.getArea());
         txtDetailInstructions.setText(meal.getInstructions());
         ratingDetail.setRating((float) 2.5);
+        pgBarIngredients.setVisibility(View.GONE);
+        pgBarDetailHeader.setVisibility(View.GONE);
+        layoutDetailHeaderRight.setVisibility(View.VISIBLE);
 
         String ingredients = meal.getIngredients();
         if (ingredients != null) {

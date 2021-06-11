@@ -54,6 +54,10 @@
             android:layout_height="wrap_content"
             android:paddingBottom="64dp"
             android:orientation="vertical">
+            <ProgressBar
+                android:id="@+id/pgBarHome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvHomeReceipes"
                 android:layout_width="match_parent"

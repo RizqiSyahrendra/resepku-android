@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -40,6 +41,7 @@ public class FragmentHome extends Fragment {
     MaterialButton btnHomeSearch, btnHomeViewAll;
     ArrayList<Meal> listMeal;
     MainActivity parent;
+    ProgressBar pgBarHome;
 
     public static FragmentHome newInstance(MainActivity tempParent) {
         FragmentHome fragment = new FragmentHome();
@@ -66,14 +68,17 @@ public class FragmentHome extends Fragment {
         btnHomeSearch = view.findViewById(R.id.btnHomeSearch);
         btnHomeViewAll = view.findViewById(R.id.btnHomeViewAll);
         rvHomeReceipes = view.findViewById(R.id.rvHomeReceipes);
+        pgBarHome = view.findViewById(R.id.pgBarHome);
         rvHomeReceipes.setLayoutManager(new GridLayoutManager(getContext(), 2));
+
+        pgBarHome.setVisibility(View.VISIBLE);
 
         //set adapter to recyclerview
         ReceipesAdapter receipesAdapter = new ReceipesAdapter(getContext(), listMeal);
         rvHomeReceipes.setAdapter(receipesAdapter);
 
         //fill data to adapter
-        new TaskGetListResep(getContext(), parent.getDB(), "a", "", listMeal, receipesAdapter).execute();
+        new TaskGetListResep(getContext(), parent.getDB(), "a", "", listMeal, receipesAdapter, pgBarHome).execute();
 
         btnHomeSearch.setOnClickListener(new View.OnClickListener() {
             @Override
