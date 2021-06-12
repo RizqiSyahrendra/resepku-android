@@ -56,6 +56,7 @@ public class DetailActivity extends AppCompatActivity {
     IngredientsAdapter ingredientsAdapter;
     ProgressBar pgBarIngredients, pgBarDetailHeader;
     LinearLayout layoutDetailHeaderRight;
+    Meal activeMeal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,15 +173,67 @@ public class DetailActivity extends AppCompatActivity {
             imgDetailBookmark.setImageResource(R.drawable.ic_bookmarked);
             isBookmarked = true;
         }
+
+        StringRequest setBookMarkRequest = new StringRequest(Request.Method.POST, getString(R.string.api_set_bookmark), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject responseObj = new JSONObject(response);
+                    Toast.makeText(DetailActivity.this, responseObj.getString("message"), Toast.LENGTH_SHORT).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(DetailActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error.networkResponse != null){
+                    String res = new String(error.networkResponse.data);
+                    try {
+                        JSONObject resObj = new JSONObject(res);
+                        Toast.makeText(DetailActivity.this, resObj.getString("message"), Toast.LENGTH_SHORT).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Toast.makeText(DetailActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        }){
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    JSONObject body = new JSONObject();
+                    body.put("token", userLogin.getAccessToken());
+                    body.put("user_id", userLogin.getId());
+                    body.put("food_id", activeMeal.getId());
+                    return body.toString().getBytes(StandardCharsets.UTF_8);
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(DetailActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                    return null;
+                }
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(setBookMarkRequest);
     }
 
     private void setMealToView(Meal meal) {
+        activeMeal = meal;
         Picasso.get().load(meal.getImage()).placeholder(R.drawable.food_placeholder).into(imgDetailResep);
         txtDetailFoodName.setText(meal.getName());
         txtDetailFoodCategory.setText(meal.getCategory());
         txtDetailFoodArea.setText(meal.getArea());
         txtDetailInstructions.setText(meal.getInstructions());
-        ratingDetail.setRating((float) 2.5);
+        ratingDetail.setRating(meal.getRating());
         pgBarIngredients.setVisibility(View.GONE);
         pgBarDetailHeader.setVisibility(View.GONE);
         layoutDetailHeaderRight.setVisibility(View.VISIBLE);
@@ -229,11 +282,13 @@ public class DetailActivity extends AppCompatActivity {
                         try {
                             JSONObject responseObj = new JSONObject(response);
                             JSONObject data = responseObj.getJSONObject("data");
+
                             meal.setCategory(data.getString("tag"));
                             meal.setArea(data.getString("place"));
                             meal.setImage(data.getString("image"));
                             meal.setInstructions(data.getString("instructions"));
                             meal.setIngredients(data.getJSONArray("ingredient").toString());
+                            meal.setRating((float) data.getDouble("rating"));
                             new TaskUpdateDetailResep().execute(meal);
 
                             setMealToView(meal);

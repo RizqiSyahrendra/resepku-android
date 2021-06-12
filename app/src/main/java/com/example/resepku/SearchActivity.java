@@ -63,7 +63,7 @@ public class SearchActivity extends AppCompatActivity {
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE && querySearch.trim().equals("")) {
                     if (ctrAlphabet < 25) {
                         ctrAlphabet++;
                         new TaskGetListResep(SearchActivity.this, db, ""+alphabet[ctrAlphabet], "", listMeal, receipesAdapter, pgBarSearch).execute();
@@ -113,6 +113,7 @@ public class SearchActivity extends AppCompatActivity {
     public void submitSearch(String q) {
         listMeal.clear();
         receipesAdapter.notifyDataSetChanged();
+        querySearch = q;
 
         if (q != null && !q.trim().equals("")) {
             new TaskGetListResep(this, db, "", q, listMeal, receipesAdapter, pgBarSearchTop).execute();

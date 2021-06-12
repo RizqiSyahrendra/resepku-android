@@ -82,7 +82,7 @@ public class Meal {
     }
 
     public float getRating() {
-        return 0;
+        return this.rating;
     }
 
     public void setRating(float rate) {
