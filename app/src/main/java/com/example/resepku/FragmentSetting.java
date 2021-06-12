@@ -83,6 +83,7 @@ public class FragmentSetting extends Fragment {
         protected Void doInBackground(Void... voids) {
             parent.getDB().userLoginDao().clear();
             parent.getDB().mealDao().clear();
+            parent.getDB().bookmarkDao().clear();
             return null;
         }
 

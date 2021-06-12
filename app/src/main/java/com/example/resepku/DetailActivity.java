@@ -164,14 +164,23 @@ public class DetailActivity extends AppCompatActivity {
         return false;
     }
 
-    public void onClickBookmark(View view) {
+    private void setBookmark() {
         if (isBookmarked) {
-            imgDetailBookmark.setImageResource(R.drawable.ic_bookmark);
-            isBookmarked = false;
+            imgDetailBookmark.setImageResource(R.drawable.ic_bookmarked);
         }
         else {
-            imgDetailBookmark.setImageResource(R.drawable.ic_bookmarked);
-            isBookmarked = true;
+            imgDetailBookmark.setImageResource(R.drawable.ic_bookmark);
+        }
+    }
+
+    public void onClickBookmark(View view) {
+        Bookmark bookmark = new Bookmark(userLogin.getId(), activeMeal.getId(), activeMeal.getName(), activeMeal.getImage());
+
+        if (isBookmarked) {
+            new TaskRemoveBookmark().execute(bookmark);
+        }
+        else {
+            new TaskSaveBookmark(db).execute(bookmark);
         }
 
         StringRequest setBookMarkRequest = new StringRequest(Request.Method.POST, getString(R.string.api_set_bookmark), new Response.Listener<String>() {
@@ -224,6 +233,9 @@ public class DetailActivity extends AppCompatActivity {
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(setBookMarkRequest);
+
+        isBookmarked = !isBookmarked;
+        setBookmark();
     }
 
     private void setMealToView(Meal meal) {
@@ -274,6 +286,7 @@ public class DetailActivity extends AppCompatActivity {
 
             if (meal != null && !meal.getCategory().equals("")) {
                 setMealToView(meal);
+                new TaskCheckBookmark().execute();
             }
             else {
                 StringRequest detailMealRequest = new StringRequest(Request.Method.POST, getString(R.string.api_meal_detail), new Response.Listener<String>() {
@@ -290,8 +303,13 @@ public class DetailActivity extends AppCompatActivity {
                             meal.setIngredients(data.getJSONArray("ingredient").toString());
                             meal.setRating((float) data.getDouble("rating"));
                             new TaskUpdateDetailResep().execute(meal);
-
                             setMealToView(meal);
+
+                            //check bookmark
+                            if (data.getBoolean("is_bookmarked")) {
+                                isBookmarked = true;
+                                setBookmark();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Toast.makeText(DetailActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
@@ -346,4 +364,30 @@ public class DetailActivity extends AppCompatActivity {
             return null;
         }
     }
+
+    private class TaskRemoveBookmark extends AsyncTask<Bookmark, Void, Void> {
+        @Override
+        protected Void doInBackground(Bookmark... bookmarks) {
+            db.bookmarkDao().delete(bookmarks[0]);
+            return null;
+        }
+    }
+
+    private class TaskCheckBookmark extends AsyncTask<Void, Void, Integer> {
+        @Override
+        protected Integer doInBackground(Void... voids) {
+            return db.bookmarkDao().countUserAndFood(userLogin.getId(), activeMeal.getId());
+        }
+
+        @Override
+        protected void onPostExecute(Integer jumlah) {
+            super.onPostExecute(jumlah);
+            if (jumlah > 0) {
+                isBookmarked = true;
+                setBookmark();
+            }
+        }
+    }
+
+
 }
