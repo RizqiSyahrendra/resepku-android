@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -57,6 +58,7 @@ public class DetailActivity extends AppCompatActivity {
     ProgressBar pgBarIngredients, pgBarDetailHeader;
     LinearLayout layoutDetailHeaderRight;
     Meal activeMeal;
+    Intent mainIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +84,7 @@ public class DetailActivity extends AppCompatActivity {
         txtDetailFoodCategory = findViewById(R.id.txtDetailFoodCategory);
         txtDetailFoodArea = findViewById(R.id.txtDetailFoodArea);
         idMeal = getIntent().getStringExtra("id_meal");
+        mainIntent = getIntent();
 
         try {
             userLogin = new TaskGetUserLogin(db).execute().get();
@@ -370,6 +373,13 @@ public class DetailActivity extends AppCompatActivity {
         protected Void doInBackground(Bookmark... bookmarks) {
             db.bookmarkDao().delete(bookmarks[0]);
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            mainIntent.putExtra("action", "refresh_bookmarks");
+            setResult(100, mainIntent);
         }
     }
 

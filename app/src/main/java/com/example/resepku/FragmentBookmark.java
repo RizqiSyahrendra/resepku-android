@@ -1,5 +1,6 @@
 package com.example.resepku;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -70,16 +71,25 @@ public class FragmentBookmark extends Fragment {
         rvBookmarksReceipes = view.findViewById(R.id.rvBookmarksReceipes);
         rvBookmarksReceipes.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
-        receipesAdapter = new ReceipesAdapter(getContext(), listMeal);
+        receipesAdapter = new ReceipesAdapter(getContext(), this, listMeal);
         rvBookmarksReceipes.setAdapter(receipesAdapter);
 
         pgBarBookmarks.setVisibility(View.VISIBLE);
         new TaskGetBookmarks().execute();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == 100) {
+            pgBarBookmarks.setVisibility(View.VISIBLE);
+            new TaskGetBookmarks().execute();
+        }
+    }
+
     private class TaskGetBookmarks extends AsyncTask<Void, Void, List<Bookmark>> {
         @Override
         protected List<Bookmark> doInBackground(Void... voids) {
+            listMeal.clear();
             return parent.getDB().bookmarkDao().getAll(parent.getUserLogin().getId());
         }
 

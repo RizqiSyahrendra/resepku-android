@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -20,10 +21,17 @@ import java.util.ArrayList;
 public class ReceipesAdapter extends RecyclerView.Adapter<ReceipesAdapter.ViewHolder> {
     private Context context;
     private ArrayList<Meal> listMeal;
+    private Fragment fragment;
 
     public ReceipesAdapter(Context context, ArrayList<Meal> listMeal) {
         this.context = context;
         this.listMeal = listMeal;
+    }
+
+    public ReceipesAdapter(Context context, Fragment tempFragment, ArrayList<Meal> listMeal) {
+        this.context = context;
+        this.listMeal = listMeal;
+        this.fragment = tempFragment;
     }
 
     @NonNull
@@ -66,9 +74,15 @@ public class ReceipesAdapter extends RecyclerView.Adapter<ReceipesAdapter.ViewHo
         }
 
         public void viewDetail(String idMeal) {
-            Intent intentDetail = new Intent(itemView.getContext(), DetailActivity.class);
+            Intent intentDetail = new Intent(context, DetailActivity.class);
             intentDetail.putExtra("id_meal", idMeal);
-            itemView.getContext().startActivity(intentDetail);
+
+            if (fragment != null) {
+                fragment.startActivityForResult(intentDetail, 10);
+            }else {
+                itemView.getContext().startActivity(intentDetail);
+            }
+
         }
     }
 }
