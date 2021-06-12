@@ -13,6 +13,9 @@ public interface UserLoginDao {
     @Insert
     void insert(UserLogin userLogin);
 
+    @Query("UPDATE user_login SET name = :name where id = :id")
+    void update(String name, int id);
+
     @Delete
     void delete(UserLogin userLogin);
 

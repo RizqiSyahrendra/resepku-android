@@ -37,10 +37,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:text="@string/profile_email" />
+
         <EditText
             android:id="@+id/txtProfileEmail"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:enabled="false" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -64,12 +66,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="10dp">
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnProfileSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            app:cornerRadius="20dp"
-            android:text="@string/profile_save" />
+            android:onClick="onClickUpdate"
+            android:text="@string/profile_save"
+            app:cornerRadius="20dp" />
     </LinearLayout>
 </LinearLayout>
