@@ -57,6 +57,7 @@
     <string name="api_token">LOREMIPSUM</string>
     <string name="api_login">http://rizqisyahrendra.tech:5002/auth/login</string>
     <string name="api_register">http://rizqisyahrendra.tech:5002/auth/register</string>
+    <string name="api_update_user">http://rizqisyahrendra.tech:5002/auth/update-user</string>
     <string name="api_meal_list">http://rizqisyahrendra.tech:5002/meal</string>
     <string name="api_meal_detail">http://rizqisyahrendra.tech:5002/meal/detail</string>
     <string name="api_set_bookmark">http://rizqisyahrendra.tech:5002/bookmark/set</string>
