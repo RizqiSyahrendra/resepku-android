@@ -137,6 +137,7 @@ public class DetailActivity extends AppCompatActivity {
         RatingBar btnRateInput = rateView.findViewById(R.id.btnRateInput);
         Button btnRateCancel = rateView.findViewById(R.id.btnRateCancel);
         Button btnRateOk = rateView.findViewById(R.id.btnRateOk);
+        TextView titleWindowRate = rateView.findViewById(R.id.titleWindowRate);
 
         btnRateCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,13 +146,23 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
-        btnRateOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               submitRating(btnRateInput.getRating());
-               dialog.dismiss();
-            }
-        });
+        if (activeMeal.getYourRating() <= 0) {
+            btnRateOk.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    submitRating(btnRateInput.getRating());
+                    dialog.dismiss();
+                }
+            });
+            btnRateCancel.setText("Cancel");
+        }
+        else {
+            titleWindowRate.setText(getString(R.string.rate_title_after));
+            btnRateInput.setRating(activeMeal.getYourRating());
+            btnRateInput.setEnabled(false);
+            btnRateOk.setVisibility(View.GONE);
+            btnRateCancel.setText("Close");
+        }
 
         dialogBuilder.setView(rateView);
         dialog = dialogBuilder.create();
@@ -160,7 +171,7 @@ public class DetailActivity extends AppCompatActivity {
 
     public void submitRating(float rate) {
         if(rate < 0.5) {
-            Toast.makeText(this, "Rating can't be empty.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Rating is empty.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -170,7 +181,9 @@ public class DetailActivity extends AppCompatActivity {
                 try {
                     JSONObject responseObj = new JSONObject(response);
                     String resultMessage = responseObj.getString("message");
+
                     Toast.makeText(DetailActivity.this, resultMessage, Toast.LENGTH_SHORT).show();
+                    new TaskGetDetailResep(true, true).execute();
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(DetailActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
@@ -305,18 +318,23 @@ public class DetailActivity extends AppCompatActivity {
         setBookmark();
     }
 
-    private void setMealToView(Meal meal) {
+    private void setMealToView(Meal meal, boolean updateRatingOnly) {
         activeMeal = meal;
+        ratingDetail.setRating(meal.getRating());
+        if (updateRatingOnly) {
+            return;
+        }
+
         Picasso.get().load(meal.getImage()).placeholder(R.drawable.food_placeholder).into(imgDetailResep);
         txtDetailFoodName.setText(meal.getName());
         txtDetailFoodCategory.setText(meal.getCategory());
         txtDetailFoodArea.setText(meal.getArea());
         txtDetailInstructions.setText(meal.getInstructions());
-        ratingDetail.setRating(meal.getRating());
         pgBarIngredients.setVisibility(View.GONE);
         pgBarDetailHeader.setVisibility(View.GONE);
         layoutDetailHeaderRight.setVisibility(View.VISIBLE);
 
+        listIngredient.clear();
         String ingredients = meal.getIngredients();
         if (ingredients != null) {
             try {
@@ -342,19 +360,35 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private class TaskGetDetailResep extends AsyncTask<Void, Void, Meal> {
+        public boolean updateNew;
+        public boolean updateRatingOnly;
+
+        public TaskGetDetailResep(boolean paramUpdateNew, boolean updateRatingOnly) {
+            this.updateNew = paramUpdateNew;
+            this.updateRatingOnly = updateRatingOnly;
+        }
+
+        public TaskGetDetailResep() {
+            this.updateNew = false;
+            this.updateRatingOnly = false;
+        }
+
+
         @Override
         protected Meal doInBackground(Void... voids) {
+            if (updateNew) {
+                return activeMeal;
+            }
+
             int id = Integer.parseInt(idMeal);
-            Meal meal = db.mealDao().getOne(id);
-            return meal;
+            return db.mealDao().getOne(id);
         }
 
         @Override
         protected void onPostExecute(Meal meal) {
             super.onPostExecute(meal);
-
-            if (meal != null && !meal.getCategory().equals("")) {
-                setMealToView(meal);
+            if (meal != null && !meal.getCategory().equals("") && !updateNew) {
+                setMealToView(meal, updateRatingOnly);
                 new TaskCheckBookmark().execute();
             }
             else {
@@ -371,8 +405,10 @@ public class DetailActivity extends AppCompatActivity {
                             meal.setInstructions(data.getString("instructions"));
                             meal.setIngredients(data.getJSONArray("ingredient").toString());
                             meal.setRating((float) data.getDouble("rating"));
+                            meal.setYourRating((float) data.getDouble("your_rating"));
+
                             new TaskUpdateDetailResep().execute(meal);
-                            setMealToView(meal);
+                            setMealToView(meal, updateRatingOnly);
 
                             //check bookmark
                             if (data.getBoolean("is_bookmarked")) {

@@ -39,6 +39,7 @@
 
     <!--  rate  -->
     <string name="rate_title">Rate this recipe</string>
+    <string name="rate_title_after">Thank you for rating this recipe</string>
 
     <!--  search  -->
     <string name="search_title">Browse Recipe</string>
