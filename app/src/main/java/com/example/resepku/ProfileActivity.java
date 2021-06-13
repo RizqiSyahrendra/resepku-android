@@ -1,16 +1,21 @@
 package com.example.resepku;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -20,10 +25,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutionException;
 
@@ -32,6 +40,7 @@ public class ProfileActivity extends AppCompatActivity {
     Button btnProfileSave;
     AppDatabase db;
     UserLogin userLogin;
+    ImageView imgProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +54,7 @@ public class ProfileActivity extends AppCompatActivity {
         txtProfilePassword = findViewById(R.id.txtProfilePassword);
         txtProfileConfirmPassword = findViewById(R.id.txtProfileConfirmPassword);
         btnProfileSave = findViewById(R.id.btnProfileSave);
+        imgProfile = findViewById(R.id.imgProfile);
 
         db = Room.databaseBuilder(this, AppDatabase.class, "db_resep").build();
 
@@ -82,14 +92,17 @@ public class ProfileActivity extends AppCompatActivity {
         if(!password.equals("") || !confirmPassword.equals("")){
             if(password.equals("")) {
                 Toast.makeText(this, "Password can't be empty.", Toast.LENGTH_SHORT).show();
+                btnProfileSave.setEnabled(true);
                 return;
             }
             if(confirmPassword.equals("")) {
                 Toast.makeText(this, "Confirm Password can't be empty.", Toast.LENGTH_SHORT).show();
+                btnProfileSave.setEnabled(true);
                 return;
             }
             if(!password.equals(confirmPassword)) {
                 Toast.makeText(this, "Password doesn't match.", Toast.LENGTH_SHORT).show();
+                btnProfileSave.setEnabled(true);
                 return;
             }
         }
@@ -138,6 +151,7 @@ public class ProfileActivity extends AppCompatActivity {
                     body.put("name", name);
                     body.put("password", password);
                     body.put("token", userLogin.getAccessToken());
+
                     return body.toString().getBytes(StandardCharsets.UTF_8);
                 }
                 catch (JSONException e) {
@@ -156,14 +170,6 @@ public class ProfileActivity extends AppCompatActivity {
         protected Void doInBackground(UserLogin... userLogins) {
             db.userLoginDao().update(txtProfileName.getText().toString(), userLogin.getId());
             return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-//            Intent mainIntent = new Intent(ProfileActivity.this, MainActivity.class);
-//            startActivity(mainIntent);
-//            finish();
-//            super.onPostExecute(aVoid);
         }
     }
 }

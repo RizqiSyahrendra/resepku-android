@@ -59,6 +59,11 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void onClickRegister(View view) {
+        if (!Koneksi.isOnline(this)) {
+            Toast.makeText(this, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         btnSignUpSubmit.setEnabled(false);
         String name = txtRegisterName.getText().toString().trim();
         String email = txtRegisterEmail.getText().toString().trim();
@@ -68,24 +73,29 @@ public class RegisterActivity extends AppCompatActivity {
         //validasi required
         if (name.equalsIgnoreCase("")) {
             Toast.makeText(this, "Name is empty!", Toast.LENGTH_SHORT).show();
+            btnSignUpSubmit.setEnabled(true);
             return;
         }
         if (email.equalsIgnoreCase("")) {
             Toast.makeText(this, "Email is empty!", Toast.LENGTH_SHORT).show();
+            btnSignUpSubmit.setEnabled(true);
             return;
         }
         if (password.equalsIgnoreCase("")) {
             Toast.makeText(this, "Password is empty!", Toast.LENGTH_SHORT).show();
+            btnSignUpSubmit.setEnabled(true);
             return;
         }
         if (confirmPassword.equalsIgnoreCase("")) {
             Toast.makeText(this, "Confirm Password is empty!", Toast.LENGTH_SHORT).show();
+            btnSignUpSubmit.setEnabled(true);
             return;
         }
 
         //cek konfirmasi password
         if (!password.equals(confirmPassword)) {
             Toast.makeText(this, "Password and Confirm Password is not match!", Toast.LENGTH_SHORT).show();
+            btnSignUpSubmit.setEnabled(true);
             return;
         }
 

@@ -57,6 +57,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onClickLogin(View view) {
+        if (!Koneksi.isOnline(this)) {
+            Toast.makeText(this, getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         btnSignInSubmit.setEnabled(false);
         String email = txtLoginEmail.getText().toString();
         String password = txtLoginPassword.getText().toString();
