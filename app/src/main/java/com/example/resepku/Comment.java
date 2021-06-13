@@ -1,26 +1,37 @@
 package com.example.resepku;
 
 public class Comment {
-    public String id, name, text, date;
+    public int id, user_id;
+    public String name, text, date, img;
 
     public Comment(String name, String text) {
         this.name = name;
         this.text = text;
     }
 
-    public Comment(String id, String name, String text, String date) {
+    public Comment(int id, int user_id, String name, String text, String date, String img) {
         this.id = id;
+        this.user_id = user_id;
         this.name = name;
         this.text = text;
         this.date = date;
+        this.img  = img;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
+    }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 
     public String getName() {
@@ -45,5 +56,13 @@ public class Comment {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 }

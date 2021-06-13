@@ -35,6 +35,7 @@
 
     <!--  comments  -->
     <string name="comments_input_placeholder">Enter your comment...</string>
+    <string name="comments_not_found">No comments found.</string>
 
     <!--  rate  -->
     <string name="rate_title">Rate this recipe</string>
@@ -62,6 +63,9 @@
     <string name="api_meal_detail">http://rizqisyahrendra.tech:5002/meal/detail</string>
     <string name="api_set_bookmark">http://rizqisyahrendra.tech:5002/bookmark/set</string>
     <string name="api_get_bookmark">http://rizqisyahrendra.tech:5002/bookmark</string>
+    <string name="api_get_comments">http://rizqisyahrendra.tech:5002/comment/get</string>
+    <string name="api_add_comments">http://rizqisyahrendra.tech:5002/comment/add</string>
+    <string name="api_delete_comments">http://rizqisyahrendra.tech:5002/comment/delete</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

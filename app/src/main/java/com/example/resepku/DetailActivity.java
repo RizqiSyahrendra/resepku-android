@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -102,7 +103,14 @@ public class DetailActivity extends AppCompatActivity {
         rvDetailIngredients.setAdapter(ingredientsAdapter);
 
         loadDetailData();
-        loadFragment(new FragmentComments());
+    }
+
+    public UserLogin getUserLogin() {
+        return userLogin;
+    }
+
+    public Meal getActiveMeal() {
+        return activeMeal;
     }
 
     @Override
@@ -273,6 +281,8 @@ public class DetailActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+
+        loadFragment(FragmentComments.newInstance(this));
     }
 
     private class TaskGetDetailResep extends AsyncTask<Void, Void, Meal> {

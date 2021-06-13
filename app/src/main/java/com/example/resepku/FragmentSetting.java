@@ -64,7 +64,7 @@ public class FragmentSetting extends Fragment {
             public void onClick(View v) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext())
                         .setTitle("Sign Out")
-                        .setMessage("Are you sure you want to sign out?")
+                        .setMessage("Do you want to sign out?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 new LogoutTask().execute();

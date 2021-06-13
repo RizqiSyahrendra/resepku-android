@@ -2,34 +2,62 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal">
-    <ImageView
-        android:id="@+id/imgItemComment"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/user_placeholder"/>
-    <LinearLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/txtItemCommentName"
+        app:cardBackgroundColor="@color/cardview_light_background"
+        android:layout_margin="2dp"
+        app:cardCornerRadius="10dp">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Name"
-            android:textStyle="bold"/>
-        <TextView
-            android:id="@+id/txtItemCommentText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Lorem ipsum sir amet"/>
-        <TextView
-            android:id="@+id/txtItemCommentDate"
-            android:layout_marginTop="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:text="2020-01-01"/>
-    </LinearLayout>
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/imgItemComment"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/user_placeholder"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/txtItemCommentName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/txtItemCommentText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Lorem ipsum sir amet"/>
+               <RelativeLayout
+                   android:id="@+id/containerRelativeComment"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content">
+                   <TextView
+                       android:id="@+id/txtItemCommentDate"
+                       android:layout_marginTop="10dp"
+                       android:layout_width="100dp"
+                       android:layout_height="wrap_content"
+                       android:text="2020-01-01"/>
+                   <com.google.android.material.button.MaterialButton
+                       android:id="@+id/btnItemCommentDelete"
+                       android:layout_width="40dp"
+                       android:layout_height="35dp"
+                       android:layout_marginTop="5dp"
+                       android:backgroundTint="@color/secondary2"
+                       app:icon="@drawable/ic_delete"
+                       android:layout_alignParentRight="true"
+                       android:visibility="gone"
+                       android:padding="8dp"
+                       app:cornerRadius="10dp"/>
+               </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </LinearLayout>
