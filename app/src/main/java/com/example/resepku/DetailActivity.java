@@ -151,7 +151,63 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void submitRating(float rate) {
-        Toast.makeText(this, "Rate : " + rate, Toast.LENGTH_SHORT).show();
+        if(rate < 0.5) {
+            Toast.makeText(this, "Rating can't be empty.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, getString(R.string.api_set_rating), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject responseObj = new JSONObject(response);
+                    String resultMessage = responseObj.getString("message");
+                    Toast.makeText(DetailActivity.this, resultMessage, Toast.LENGTH_SHORT).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(DetailActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error.networkResponse != null) {
+                    String body = new String(error.networkResponse.data);
+                    try {
+                        JSONObject result = new JSONObject(body);
+                        Toast.makeText(DetailActivity.this, result.getString("message"), Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }){
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    JSONObject body = new JSONObject();
+                    body.put("user_id", userLogin.getId());
+                    body.put("food_id", idMeal);
+                    body.put("rating", rate);
+                    body.put("token", userLogin.getAccessToken());
+                    return body.toString().getBytes(StandardCharsets.UTF_8);
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+
+        Toast.makeText(this, "Thank you for your rating!", Toast.LENGTH_SHORT).show();
     }
 
     private void loadDetailData() {

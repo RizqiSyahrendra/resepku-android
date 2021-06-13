@@ -62,6 +62,8 @@
     <string name="api_meal_detail">http://rizqisyahrendra.tech:5002/meal/detail</string>
     <string name="api_set_bookmark">http://rizqisyahrendra.tech:5002/bookmark/set</string>
     <string name="api_get_bookmark">http://rizqisyahrendra.tech:5002/bookmark</string>
+    <string name="api_set_rating">http://rizqisyahrendra.tech:5002/rating/set</string>
+    <string name="api_get_rating">http://rizqisyahrendra.tech:5002/rating/get</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
