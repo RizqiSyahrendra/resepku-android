@@ -117,6 +117,7 @@ public class FragmentBookmark extends Fragment {
                                 new TaskSaveBookmark(parent.getDB()).execute(bookmark);
 
                                 Meal meal = bookmark.toMeal();
+                                new TaskAddResep(parent.getDB()).execute(meal);
                                 listMeal.add(meal);
 
                                 pgBarBookmarks.setVisibility(View.GONE);

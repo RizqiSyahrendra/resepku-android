@@ -23,7 +23,7 @@ public interface MealDao {
     @Query("SELECT * FROM meal WHERE name LIKE '%' || :q || '%'")
     List<Meal> getByName(String q);
 
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Meal meal);
 
     @Update
