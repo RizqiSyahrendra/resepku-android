@@ -100,10 +100,7 @@ public class TaskGetListResep extends AsyncTask<Void, Void, List<Meal>> {
                                     0
                             );
 
-                            if (search == null || search.trim().equals("")) {
-                                new TaskAddResep(db).execute(meal);
-                            }
-
+                            new TaskAddResep(db).execute(meal);
                             meals.add(meal);
                         }
 
